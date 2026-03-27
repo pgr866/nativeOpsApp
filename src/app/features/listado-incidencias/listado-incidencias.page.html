@@ -1,0 +1,48 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Listado de Incidencias</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="centered-content">
+    @if (incidenciaService.incidencias().length > 0) {
+    <div>
+      @for (item of incidenciaService.incidencias(); track item.id) {
+      <ion-card (click)="mostrarEnConstruccion()" class="ion-padding ion-margin-bottom cursor-pointer">
+
+        <ion-card-header>
+          <ion-card-title>
+            Incidencia - {{ item.fecha | date:'dd/MM/yyyy HH:mm' }}
+          </ion-card-title>
+        </ion-card-header>
+
+        <img [src]="item.foto" alt="Foto de la incidencia">
+
+        <ion-card-content>
+          <div class="ion-margin-top ion-text-center">
+            <p><strong>Ubicación:</strong></p>
+            <p><strong>Latitud:</strong> {{ item.latitud | number:'1.6-6' }}</p>
+            <p><strong>Longitud:</strong> {{ item.longitud | number:'1.6-6' }}</p>
+          </div>
+          <ion-button expand="block" color="danger" fill="outline" (click)="eliminarIncidencia(item.id, $event)"
+            class="ion-margin-top small-centered-button">
+            <ion-icon name="trash" slot="start"></ion-icon>
+            Eliminar Incidencia
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+      }
+    </div>
+    } @else {
+    <div class="ion-text-center ion-padding">
+      <ion-icon name="clipboard-outline"></ion-icon>
+      <h2>No hay incidencias</h2>
+      <p>Pulsa el botón de atrás y crea una nueva incidencia para verla aquí.</p>
+    </div>
+    }
+  </div>
+</ion-content>

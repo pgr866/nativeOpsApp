@@ -1,0 +1,69 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Nueva Incidencia</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="centered-content">
+    @if (service.newIncidencia(); as nueva) {
+    <ion-card class="ion-padding">
+      <ion-card-header>
+        <ion-card-title>Capturar Evidencia</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <div class="ion-margin-bottom">
+          @if (nueva.foto) {
+          <div>
+            <img [src]="nueva.foto" alt="Foto capturada">
+            <ion-button expand="block" (click)="tomarFoto()" class="small-centered-button">
+              <ion-icon name="camera" slot="start"></ion-icon>
+              Cambiar Foto
+            </ion-button>
+          </div>
+          } @else {
+          <div>
+            <img src="https://placehold.co/540x360/898989/1E1E1E?text=Sin+foto+capturada%0APulsa+el+boton+para+empezar"
+              alt="No hay foto capturada">
+            <ion-button expand="block" (click)="tomarFoto()" class="small-centered-button">
+              <ion-icon name="camera" slot="start"></ion-icon>
+              Tomar Foto
+            </ion-button>
+          </div>
+          }
+
+          @if (nueva.latitud !== undefined && nueva.longitud !== undefined) {
+          <div class="ion-margin-top ion-text-center">
+            <p><strong>Ubicación detectada:</strong></p>
+            <p><strong>Latitud:</strong> {{ nueva.latitud | number:'1.6-6' }}</p>
+            <p><strong>Longitud:</strong> {{ nueva.longitud | number:'1.6-6' }}</p>
+          </div>
+          } @else {
+          <div class="ion-margin-top">
+            <p>⚠️ Obteniendo coordenadas GPS...</p>
+          </div>
+          }
+        </div>
+
+        <div class="ion-display-flex ion-margin-top">
+          <ion-button expand="block" (click)="service.resetNewIncidencia()"
+            class="ion-margin-top small-centered-button">
+            <ion-icon name="refresh-outline" slot="start"></ion-icon>
+            Reset
+          </ion-button>
+
+          <ion-button expand="block" (click)="guardarIncidencia()" class="ion-margin-top small-centered-button"
+            [disabled]="!nueva.foto || nueva.latitud === undefined || nueva.longitud === undefined">
+            <ion-icon name="save-outline" slot="start"></ion-icon>
+            Guardar Incidencia
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+    }
+  </div>
+</ion-content>
